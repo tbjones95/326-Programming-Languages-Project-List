@@ -1,0 +1,55 @@
+% Question 1 A
+isSet(L) :-
+    setof(X, member(X, L), Set), 
+    length(Set, Len), 
+    length(L, Len).
+
+% Question 1 B
+subset([], L).
+subset([X|L1], L2):- 
+    member(X, L2), 
+    subset(L1, L2).
+
+% Question 1 C
+union([X|Y], Z, W):- 
+    member(X, Z),
+    union(Y, Z, W).
+union([X|Y], Z, [X|W]):- 
+    \+ member(X,Z),
+    union(Y, Z, W).
+union([], Z, Z).
+
+% Question 1 D
+intersection([ ], X, [ ]).
+intersection([X|R], Y, [X|Z]):- 
+    member(X, Y), 
+    !, 
+    intersection(R, Y, Z).
+intersection([X|R], Y, Z):- 
+    intersection(R, Y, Z).
+
+% Question 2
+tally(X,[Y,X|_], Y).
+tally(X,[Z|Tail], Y) :- 
+    X\=Z, tally(X,Tail, Y).
+
+% Question 3
+subst(E,S,[],[]).
+subst(E,S,[E|T1],[S|T2]):-
+    subst(E,S,T1,T2).
+subst(E,S,[H|T1],[H|T2]):-
+    E\=H, subst(E,S,T1,T2).
+
+% Question 4
+insert(X, [], [X]).
+insert(X, [H|T], L):- 
+    ((X < H)-> append([X],[H|T], L);
+    insert(X, T, L1),
+        append([H], L1, L)).                      
+
+% Question 5
+flatten([], []).
+flatten([H|T], X):- flatten(H, Y),
+    flatten(T, Z),
+    append(Y, Z, X).
+flatten(H, [H]).
