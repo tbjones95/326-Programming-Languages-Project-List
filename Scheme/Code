@@ -1,0 +1,98 @@
+(define (subst x y L)
+    (cond
+      ((null? L) '())
+      ((list? (car L)) (cons (subst x y (car L)) (subst x y (cdr L))))
+      ((eq? (car L) x) (cons y (subst x y (cdr L))))
+      (else
+        (cons (car L) (subst x y (cdr L))))))
+
+(subst 'c 'k '(c o c o n u t))
+
+(define (all-different? L)
+      (if (pair? L)
+          (and (not (member (car L) (cdr L)))
+          (all-different? (cdr L)))
+      #t))
+
+(all-different? '(3 7 2 7))
+
+(define (val Tree)(car Tree))
+
+(define (left Tree)(car(cdr Tree)))
+
+(define (right Tree)(car(cdr(cdr Tree))))
+
+(define T
+    '(13
+      (5
+       (1 () ())
+       (8 ()
+        (9 () ())))
+      (22
+       (17 () ())
+       (25 () ()))))
+
+(define (n-nodes T)
+    (cond
+      ((null? t) 0)
+      (else (+ 1
+             (n-nodes (left t))
+             (n-nodes (right t))))))
+
+(n-nodes T)
+
+(define (n-leaves T)
+    (cond
+      ((null? T) 0)
+      ((and
+         (null? (right T))
+         (null? (left T)))
+       1)
+      (else (+ (n-leaves (right T)) (n-leaves (left T))))))
+
+(n-leaves T)
+
+(define (height T)
+    (cond
+      ((null? t) 0)
+      (else (+ 1
+             (max 
+               (height (left T))
+               (height (right T)))))))
+
+(height T)
+
+(define (postorder T)
+    (cond
+      ((null? T) '())
+      (else (append 
+              (postorder (left T))
+              (postorder (right T))
+              (list (val T))))))
+
+(postorder T)
+
+(define (flatten L)
+    (cond
+      ((null? L) '())
+      ((pair? L)
+       (append 
+         (flatten (car L))
+         (flatten (cdr L))))
+      (else
+        (list L))))
+
+(flatten '(1 (2 (3 4)) 5))
+
+(define (member-bst? V T)
+    (cond
+      ((null? T) #f)
+      ((equal? (val T) V) #t)
+      (else (or
+              (member-bst? V (left T))
+              (member-bst? V (right T))))))
+
+(member-bst? 17 T)
+
+
+
